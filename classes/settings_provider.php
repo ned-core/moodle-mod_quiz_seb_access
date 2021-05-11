@@ -176,7 +176,7 @@ class settings_provider {
 
             $notifyelement = $mform->createElement('html', $OUTPUT->render($notify));
             self::insert_element($quizform, $mform, $notifyelement);
-		}
+        }
 
         if (self::is_conflicting_permissions($quizform->get_context())) {
             $notify = new \core\output\notification(
