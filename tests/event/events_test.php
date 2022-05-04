@@ -14,28 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace quizaccess_seb\event;
+
+use quiz;
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once(__DIR__ . '/..//test_helper_trait.php');
+
 /**
  * PHPUnit tests for all plugin events.
  *
  * @package    quizaccess_seb
  * @author     Andrew Madden <andrewmadden@catalyst-au.net>
  * @copyright  2020 Catalyst IT
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/test_helper_trait.php');
-
-/**
- * PHPUnit tests for all plugin events.
- *
- * @copyright  2020 Catalyst IT
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quizaccess_seb_event_testcase extends advanced_testcase {
-    use quizaccess_seb_test_helper_trait;
+class events_test extends \advanced_testcase {
+    use \quizaccess_seb_test_helper_trait;
 
     /**
      * Called before every test.
@@ -85,7 +81,7 @@ class quizaccess_seb_event_testcase extends advanced_testcase {
             . "Expected config key: '$expectedconfigkey'. "
             . "Received config key: 'configkey'. Received browser exam key: 'browserexamkey'.",
             $event->get_description());
-        $this->assertEquals(context_module::instance($quiz->cmid), $event->get_context());
+        $this->assertEquals(\context_module::instance($quiz->cmid), $event->get_context());
         $this->assertEquals($user->id, $event->userid);
         $this->assertEquals($quiz->id, $event->objectid);
         $this->assertEquals($this->course->id, $event->courseid);
@@ -108,7 +104,7 @@ class quizaccess_seb_event_testcase extends advanced_testcase {
 
         $event = \quizaccess_seb\event\template_created::create_strict(
             $template,
-            context_system::instance());
+            \context_system::instance());
 
         // Create an event sink, trigger event and retrieve event.
         $sink = $this->redirectEvents();
@@ -124,7 +120,7 @@ class quizaccess_seb_event_testcase extends advanced_testcase {
             "The user with id '$user->id' has created a template with id '{$template->get('id')}'.",
             $event->get_description()
         );
-        $this->assertEquals(context_system::instance(), $event->get_context());
+        $this->assertEquals(\context_system::instance(), $event->get_context());
         $this->assertEquals($user->id, $event->userid);
         $this->assertEquals($template->get('id'), $event->objectid);
     }
